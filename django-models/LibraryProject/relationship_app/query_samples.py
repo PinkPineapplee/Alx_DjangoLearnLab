@@ -10,11 +10,16 @@ from relationship_app.models import Author, Book, Library, Librarian
 
 # Query all books by a specific author
 def books_by_author(author_name):
-   author = Author.objects.get(name="J.K. Rowling")
-   books = Book.objects.filter(author=author)
+    books = Book.objects.filter(author__name=author_name)
+    return books
 
-   for book in books:
-    print(book.title)
+if __name__ == "__main__":
+    author_name = "J.K. Rowling"
+    books = books_by_author(author_name)
+
+    print(f"Books by {author_name}:")
+    for book in books:
+        print(book.title)
 
 # List all books in a library
 def books_in_library(library_name):
@@ -29,9 +34,6 @@ def librarian_for_library(library_name):
 
 
 if __name__ == "__main__":
-    print("Books by J.K. Rowling:")
-    print(list(books_by_author("J.K. Rowling")))
-
     print("\nBooks in Central Library:")
     print(list(books_in_library("Central Library")))
 
