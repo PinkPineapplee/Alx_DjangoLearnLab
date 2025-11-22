@@ -3,12 +3,13 @@ from django.views.generic import DetailView
 from .models import Book, Library
 
 
-# Function-based view — list all books
-def book_list(request):
-      """Retrieves all books and renders a template displaying the list."""
-      books = Book.objects.all()  # Fetch all book instances from the database
-      context = {'book_list': books}  # Create a context dictionary with book list
-      return render(request, 'books/list_book.html', context)
+# Function-based view: list all books
+def list_books(request):
+    """
+    Reach into the DB and pull every Book record, then render a simple list.
+    """
+    books = Book.objects.select_related('author').all()  # efficient FK fetch
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
 # Class-based view — display details for a specific library
