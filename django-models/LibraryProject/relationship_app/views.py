@@ -5,6 +5,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 # Function-based view: list all books
@@ -21,33 +22,25 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-# Login View
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('/')  # Redirect anywhere after login
-    else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
-
-
-# Logout View
-def logout_view(request):
-    logout(request)
-    return render(request, 'relationship_app/logout.html')
-
-
-# Registration View
-def register_view(request):
+# FUNCTION-BASED REGISTER VIEW
+def register(request):   
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('/')   # Redirect after registration
+            return redirect('/')
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
+
+
+# CLASS-BASED LOGIN VIEW
+class CustomLoginView(LoginView):
+    template_name = 'relationship_app/login.html'  
+    redirect_authenticated_user = True
+
+
+# CLASS-BASED LOGOUT VIEW
+class CustomLogoutView(LogoutView):
+    template_name = 'relationship_app/logout.html'  

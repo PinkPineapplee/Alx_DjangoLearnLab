@@ -8,8 +8,7 @@ urlpatterns = [
     path('books/', views.list_books, name='list_books'),  # Function-based view
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),  # Class-based view
     path('relationship_app/', include('relationship_app.urls', namespace='relationship_app')),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
-    path('register/', register_view, name='register'),
-
+    path('register/', views.register, name='register'),  # <-- contains "views.register"
+    path('login/', CustomLoginView.as_view(template_name='relationship_app/login.html'), name='login'),
+    path('logout/', CustomLogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
 ]
