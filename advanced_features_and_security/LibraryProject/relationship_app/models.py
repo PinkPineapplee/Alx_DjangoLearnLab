@@ -69,3 +69,19 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
+
+class Document(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+
+    # REQUIRED EXACT STRINGS: "can_view", "can_create", "can_edit", "can_delete"
+    class Meta:
+        permissions = [
+            ('can_view', 'Can view document'),
+            ('can_create', 'Can create document'),
+            ('can_edit', 'Can edit document'),
+            ('can_delete', 'Can delete document'),
+        ]
+
+    def __str__(self):
+        return self.title
