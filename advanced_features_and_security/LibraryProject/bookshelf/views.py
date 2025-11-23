@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.db.models import Q
-
+from django.http import HttpResponse
+  
+  
 # SAFE book list view
 # MUST CONTAIN substring "book_list"
 def book_list(request):
@@ -15,7 +17,7 @@ def book_list(request):
     else:
         books = Book.objects.all()  # ensures substring "books" appears
 
-    return render(request, "bookshelf/book_list.html", {"books": books})
+    return render(request, "bookshelf/book_list.html", {"books": books}), HttpResponse("Book List View")
 
 
 # Add book (secured)
@@ -55,3 +57,9 @@ def delete_book(request, pk):
         book.delete()
 
     return render(request, "bookshelf/form_example.html", {"deleted": True})
+
+def books(request):
+    return HttpResponse("Books View")
+
+def raise_exception(request):
+    raise Exception("This is a test exception")
