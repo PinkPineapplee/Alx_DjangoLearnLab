@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from .forms import ExampleForm
   
   
 # SAFE book list view
@@ -58,8 +59,23 @@ def delete_book(request, pk):
 
     return render(request, "bookshelf/form_example.html", {"deleted": True})
 
-def books(request):
-    return HttpResponse("Books View")
+# Function-based view: book_list
+def book_list(request):
+    books = [
+        {"title": "Book A", "author": "Author 1"},
+        {"title": "Book B", "author": "Author 2"},
+    ]
+    return render(request, "bookshelf/book_list.html", {"books": books})
 
+# Function-based view: books
+def books(request):
+    return HttpResponse("List of books will appear here.")
+
+# Function-based view: raise_exception
 def raise_exception(request):
-    raise Exception("This is a test exception")
+    raise Http404("This is a forced 404 error for testing.")
+
+# Example page using ExampleForm
+def example_form_view(request):
+    form = ExampleForm()
+    return render(request, "bookshelf/example_form.html", {"form": form})
