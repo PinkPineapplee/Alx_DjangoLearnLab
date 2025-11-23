@@ -142,3 +142,35 @@ SESSION_COOKIE_SECURE = True  # required substring: "SESSION_COOKIE_SECURE"
 
 # Disable DEBUG in production
 DEBUG = False
+
+# ===============================
+#   SECURITY: HTTPS & HEADERS
+# ===============================
+
+# 🔒 Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True  
+
+# 🔐 Strict Transport Security (HSTS)
+# Forces browsers to only use HTTPS.
+# 31536000 seconds = 1 year
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True      # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True                 # Allow domain to be added to HSTS preload list
+
+# 🍪 Secure Cookies (sent only over HTTPS)
+SESSION_COOKIE_SECURE = True               # Session cookie secure flag
+CSRF_COOKIE_SECURE = True                  # CSRF cookie secure flag
+
+# 🛡 Additional Security Headers
+X_FRAME_OPTIONS = "DENY"                   # Prevent clickjacking by disallowing iframe embedding
+SECURE_CONTENT_TYPE_NOSNIFF = True         # Prevent MIME-type sniffing
+SECURE_BROWSER_XSS_FILTER = True           # Enable browser XSS protection
+
+# 🔧 Recommended for production
+CSRF_TRUSTED_ORIGINS = [
+    "https://your-domain.com",
+    "https://www.your-domain.com"
+]
+
+# Make sure Django knows it's behind a proxy (if using Nginx/Apache)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
