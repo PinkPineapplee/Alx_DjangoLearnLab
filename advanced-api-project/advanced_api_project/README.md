@@ -33,3 +33,19 @@ DELETE /books/<pk>/delete/
 
 Each view uses Django REST Framework generic views for fast, clean CRUD logic.
 Custom behavior is implemented through perform_create() and perform_update().
+
+
+### Filterings
+/books/?author=Chinua Achebe  
+/books/?publication_year=1958  
+
+### Searching
+/books/?search=achebe  
+/books/?search=things  
+
+### Ordering
+/books/?ordering=title  
+/books/?ordering=-publication_year  
+
+### Combined
+/books/?search=harry&ordering=-title

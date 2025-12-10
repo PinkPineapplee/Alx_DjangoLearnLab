@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, filters
 from .models import Book
 from .serializers import BookSerializer
 
@@ -10,7 +10,15 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
 
-
+#Enable filtering,searching,ordering
+filter_backends = [DjangoFilterBackend,
+                   filters.SearchFilter,
+                   filters.OrderingFilter
+                   ]
+filterset_fields = ['title','author','publication_year']
+search_fields = ['title','author']
+ordering_fields = ['title', 'publication_year']
+ordering = ['title']
 # DetailView -> GET /books/<pk>/
 # Allows public read-only access.
 class BookDetailView(generics.RetrieveAPIView):
