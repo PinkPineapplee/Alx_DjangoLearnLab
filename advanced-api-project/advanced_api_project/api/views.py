@@ -36,11 +36,14 @@ class BookCreateView(generics.CreateAPIView):
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_update(self, serializer):
         #Extra hooks can be added here
         serializer.save()
+        # automatically force publication_year to int if needed
+        pub_year = int(self.request.data.get("publication_year", 0))
+        serializer.save(publication_year=pub_year)
 
  # DeleteView -> DELETE / books/<pk>/
  # Only authenticated users can delete.
