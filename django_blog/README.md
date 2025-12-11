@@ -26,3 +26,21 @@
 ### Testing
 - Use the included unit tests: `python manage.py test`
 - Manual test steps: register, login, edit profile, logout
+
+
+## Blog Post CRUD
+
+Endpoints:
+- /posts/                 GET  -> list all posts
+- /posts/new/             GET/POST -> create (login required)
+- /posts/<pk>/            GET  -> detail
+- /posts/<pk>/edit/       GET/POST -> update (author-only)
+- /posts/<pk>/delete/     POST -> delete (author-only)
+
+Permissions:
+- Anyone can read (list & detail).
+- Only authenticated users can create posts.
+- Only the original author can edit or delete their post.
+
+How author is set:
+- The CreateView sets `post.author = request.user` in `form_valid`.
