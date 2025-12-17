@@ -44,3 +44,17 @@ Permissions:
 
 How author is set:
 - The CreateView sets `post.author = request.user` in `form_valid`.
+
+## Comment System
+
+Users can view comments under each blog post.
+Authenticated users can add comments.
+Only the author of a comment can edit or delete it.
+
+### How to add a comment
+- Navigate to a blog post
+- Click "Add Comment"
+- Submit the form
+
+### How to edit/delete
+- Available only to the comment author

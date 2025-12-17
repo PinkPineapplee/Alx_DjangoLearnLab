@@ -9,8 +9,8 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
-from .forms import PostForm
+from .models import Comment, Post
+from .forms import CommentForm, PostForm
 
 # List all posts (public)
 class PostListView(ListView):
@@ -122,3 +122,23 @@ def profile_view(request):
         form = ProfileForm(instance=request.user.profile)
 
     return render(request, "blog/profile.html", {"form": form})
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
