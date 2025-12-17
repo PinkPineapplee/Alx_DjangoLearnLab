@@ -9,8 +9,9 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Comment, Post
+from .models import Post, Comment, Tag
 from .forms import CommentForm, PostForm
+from django.db.models import Q
 
 # List all posts (public)
 class PostListView(ListView):
@@ -152,3 +153,30 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return self.object.post.get_absolute_url()
+    
+
+def search_view(request):
+    query = request.GET.get("q", "")
+    posts = Post.objects.none()
+
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    return render(request, "blog/search_results.html", {
+        "query": query,
+        "posts": posts
+    })    
+
+
+def tag_posts_view(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    posts = tag.posts.all()
+
+    return render(request, "blog/tag_posts.html", {
+        "tag": tag,
+        "posts": posts
+    })
