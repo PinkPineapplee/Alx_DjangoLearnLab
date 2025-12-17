@@ -3,8 +3,12 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Comment, Post, Profile, Tag
+from django.forms import Widget
 
-#creat comment model
+class TagWidget(Widget):
+    pass
+
+#create comment model
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -38,6 +42,7 @@ class ProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     tags = forms.CharField(
         required=False,
+          widget=TagWidget(),
         help_text="Add tags separated by commas"
     )
 
