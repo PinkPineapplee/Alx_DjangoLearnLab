@@ -58,3 +58,18 @@ Only the author of a comment can edit or delete it.
 
 ### How to edit/delete
 - Available only to the comment author
+
+
+## Tagging and Search System
+
+Posts can be assigned multiple tags.
+Tags help categorize content and improve discoverability.
+
+### Adding Tags
+- While creating or editing a post, add tags separated by commas.
+
+### Viewing by Tag
+- Click a tag under a post to view all posts with that tag.
+
+### Search
+- Use the search bar to find posts by title, content, or tags.
