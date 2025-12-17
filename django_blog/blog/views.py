@@ -180,3 +180,12 @@ def tag_posts_view(request, tag_name):
         "tag": tag,
         "posts": posts
     })
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = "blog/tag_posts.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get("tag_slug")
+        return Post.objects.filter(tags__name=tag_slug)
